@@ -1,0 +1,31 @@
+---- Create a clothing store database----
+
+CREATE TABLE AGSTORE (id INTEGER PRIMARY KEY, product_name TEXT, color TEXT, price INTEGER, quantity INTEGER);
+
+INSERT INTO AGSTORE VALUES (1,"Blouse","green",15,7);
+INSERT INTO AGSTORE VALUES (2,"Pants","black",20,5);
+INSERT INTO AGSTORE VALUES (3,"Skirts","Yellow",10,4);
+INSERT INTO AGSTORE VALUES (4,"Shorts","white",12,8);
+INSERT INTO AGSTORE VALUES (5,"Shoes","Red",30,8);
+INSERT INTO AGSTORE VALUES (6,"Belts","Brown",25,9);
+INSERT INTO AGSTORE VALUES (7,"Hats","olive",16,5);
+INSERT INTO AGSTORE VALUES (8,"Socks","multi color",9,10);
+INSERT INTO AGSTORE VALUES (9,"Sandals","Orange",12,11);
+INSERT INTO AGSTORE VALUES (10,"Watch","Gold",70,28);
+INSERT INTO AGSTORE VALUES (11,"Glasses","pink",80,8);
+INSERT INTO AGSTORE VALUES (12,"Shirts","Blue",28,10);
+INSERT INTO AGSTORE VALUES (13,"Ties","Navy Blue",15,20);
+INSERT INTO AGSTORE VALUES (14,"Ear rings","Silver",50,30);
+INSERT INTO AGSTORE VALUES (15,"Bags","Brown",100,15);
+
+---- Displace database ordered by price---
+SELECT * FROM AGSTORE ORDER BY price desc;
+
+-----Display the total quantity of all products---
+SELECT SUM(quantity) FROM AGSTORE;
+
+-----What is the Average price of all items in the store---
+SELECT AVG(price) FROM AGSTORE;
+
+---What Product has the highest price-----
+SELECT MAX(price) FROM AGSTORE ORDER BY quantity;
