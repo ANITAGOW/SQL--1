@@ -1,0 +1,115 @@
+With this project, I downloaded a database called Chinook that has te following schemas; Playlists, Invoices, customers, Media Type, Playlist track, Tracks, Genres, invoice items, artists, albums and employees
+Then I performed the following analytics using sql.
+
+
+//** 1.Show the list of all customers from USA**//
+
+SELECT * FROM customers 
+WHERE Country = "USA"
+
+
+//** 2.show a list of employees whose job title is IT Staff**//
+
+SELECT * FROM Employees
+WHERE Title = "IT Staff"
+
+
+//*** 3.Locate the invoices for clients in USA. The final table should include the client's full name, invoice number, invoice date, and billing Country**///
+
+SELECT cust.FirstName, cust.LastName, inv.InvoiceId, inv.BillingCountry, inv.InvoiceDate
+FROM invoices as inv 
+LEFT JOIN customers as cust 
+ON inv.CustomerId = cust.CustomerId 
+WHERE inv.BillingCountry = "USA"
+
+
+//** 4.Give a query that displays the invoice connected to each sales representative. The whole name of the Sales Agent should be included in the final table**//
+
+SELECT emp.LastName, emp.Firstname, inv.InvoiceId
+FROM Employees emp 
+JOIN Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN Invoices Inv ON Inv.CustomerId = cust.CustomerId
+
+
+//** 5.With each invoice line ID, create a query that contains the name of the purchased track AND the artist's name**//
+
+SELECT art.name as Artist, t.Name as Track, i.InvoiceLineId
+FROM chinook.Invoice_items i
+LEFT JOIN chinook.tracks t 
+ON i.TrackID=t.TrackID
+INNER JOIN chinook.albums a
+ON a.AlbumID=t.AlbumID
+LEFT JOIN chinook.artists ar
+ON art.ArtistID=a.ArtistID;
+
+
+//** 6. Find the employee who has the highest number of customers assigned to them**//
+
+SELECT emp.LastName, emp.Firstname, COUNT(cus.Customerid) AS Customer_count
+FROM chinook.Employees emp 
+LEFT JOIN customers cus ON emp.employeeid = cus.SupportRepID
+GROUP BY emp.employeeid
+ORDER BY customer_count DESC
+LIMIT 1
+
+
+//** 7.What is the highest sales amount per invoice**//
+
+SELECT AVG(total) AS average_sales_amount
+FROM invoices
+
+//** 8. Give a query that displays total sales by Countries. Which Country has customers that made the largest purchases?***///
+
+SELECT i.billingcountry, sum(total) as Total_Sales
+FROM invoices i
+GROUP BY billingcountry
+ORDER BY totalsales DESC
+
+
+//** 9. Retrieve the top 5 best-selling albums, alongwith the total number of tracks and the total sales amount for each album.**//
+
+SELECT a.Title, COUNT(t.Trackid) AS track_count, SUM(ii.UnitPrice * ii.Quantity) AS total_sales
+FROM albums a
+JOIN tracks t ON a.Albumid = t.Albumid
+JOIN invoice_items ii ON t.Trackid = ii.Trackid
+GROUP BY a.Albumid
+ORDER BY total_sales DESC
+LIMIT 5
+
+
+//** 10.Give a query that includes the Album name, Media type, and Genre and displays all the Tracks**/// 
+
+SELECT t.Name AS 'Track Name', a.Title AS 'Album Title', m.Name AS 'Media Type', g.Name AS 'Genre'
+FROM tracks t
+JOIN albums a 
+ON a.AlbumId = t.AlbumId
+JOIN media_Types m
+ON m.mediaTypeId = t.MediaTypeId
+JOIN genres g
+ON g.genreId = t.genreId
+
+
+
+//** 11 Show a list the number of employees who are Sales Support Agents***///
+
+SELECT * FROM Employees
+WHERE Title = "Sales Support Agent"
+
+
+//** 12 Which employee generated the highest sales revenue **//
+
+SELECT e.FirstName, e.LastName, SUM(ii.UnitPrice * ii.Quantity) AS total_revenue
+FROM employees e
+JOIN customers c ON e.EmplOyeeId = c.SupportRepId
+JOIN invoices i ON c.CustomerId = i.CustomerId
+JOIN invoice_items ii ON i.Invoiceid = ii.InvoiceId
+GROUP BY e.EmployeeId
+ORDER BY total_revenue DESC
+LIMIT 1
+
+
+//** 13 How much was sold overall in 2011?**//
+
+SELECT SUM(Total)
+FROM Invoices
+WHERE InvoiceDate BETWEEN '2011-01-01' AND '2011-12-31'
