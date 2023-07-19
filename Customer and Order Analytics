@@ -1,4 +1,4 @@
-#Within this SQL, I am excuting queries on a database that consist of multiple tables aiming to acertain comprehensive statistical insights pertaining to customer and order data. 
+#Within this SQL, I am executing queries on a database that consist of multiple tables aiming to ascertain comprehensive statistical insights pertaining to customer and order data. 
 
 //**1. How many orders were placed in January?**// 
 SELECT COUNT(orderid)
